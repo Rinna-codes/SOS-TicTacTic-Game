@@ -36,51 +36,65 @@ class SOSGame():
         self.start_menu = tk.Tk()
         self.start_menu.title("SOS Start Menu 👾")
         self.start_menu.config(bg="#cacaaa")
+    
+    def _create_board_frame(self):
+        """Creates the Board size and the Game Mode selection"""
 
-    def create_start_menu(self):
-        """Setting up the start menu buttons """
+        # Board Size
+        board_frame = tk.Frame(self.start_menu, bd=3, relief=tk.RIDGE, bg="#cacaaa")
+        tk.Label(board_frame, text="Board Size:", bg="#eec584", fg="#55868c").grid(row=0, column=0, padx=5, pady=5)
+        tk.Spinbox(board_frame, from_=3, to=12, textvariable=self.board_size, width=4).grid(row=0, column=1, padx=5, pady=5)
+        board_frame.grid(row=1, column=1, columnspan=2, pady=5)
 
-        for widget in self.start_menu.winfo_children():
-            widget.destroy()
-
-        # Creating the title of the start menu 
-        title = tk.Label(self.start_menu, text="SOS Game Setup", font=("Helvetica", 16, "bold"), bg="#008B8B", fg="#FFFAFA")
-        title.grid(row=0, column=0, columnspan=3, pady=10)
-
-        # Making the Board Size Spinbox Selection
-        board_frame = tk.Frame(self.start_menu, bd=5, relief=tk.RIDGE, bg="#20B2AA",)
-        tk.Label(board_frame, text="Board Size:", bg="#FFFAFA", fg="black").grid(row=0, column=0, padx=5, pady=5)
-        tk.Spinbox(board_frame, from_=3, to=10, textvariable=self.board_size, width=5).grid(row=0, column=1, padx=5, pady=5)
-        board_frame.grid(row=1, column=0, columnspan=2, pady=5)
-
-        # Making the Game Mode Options Button
-        mode_frame = tk.Frame(self.start_menu, bd=5, relief=tk.RIDGE, bg="#20B2AA")
-        tk.Label(mode_frame, text="Game Mode:", bg="#FFFAFA", fg="black").grid(row=0,column=0, padx=5,pady=5)
+        # Game Mode 
+        mode_frame = tk.Frame(self.start_menu, bd=4, relief=tk.RIDGE, bg="#cacaaa")
+        tk.Label(mode_frame, text="Game Mode:", bg="#eec584", fg="#55868c").grid(row=0, column=0, padx=5, pady=5)
         tk.OptionMenu(mode_frame, self.mode, "Simple Game", "General Game").grid(row=0, column=1, padx=5, pady=5)
         mode_frame.grid(row=2, column=0, columnspan=2, pady=5)
 
-        # Plyaer Type Selections 
-        player_type_frame = tk.Frame(self.start_menu, bg="#008B8B")
+    def _create_player_type_frame(self):
+        """Creates the Red and Blue Player type selection controls"""
+        player_type_frame = tk.Frame(self.start_menu, bg="#cacaaa")
         player_type_frame.grid(row=3, column=0, columnspan=3, pady=10)
 
-        # Red player type controls
-        red_type_frame = tk.Frame(player_type_frame, bd=5, relief=tk.RAISED, bg="#E9967A")
-        tk.Label(red_type_frame, text="Red Player:", font=("Helvetica", 10, "bold"), bg="#E9967A").pack()
-        tk.Radiobutton(red_type_frame, text="Human", variable=self.red_player_type, value="Human", bg="#E9967A").pack(anchor=tk.W)
-        tk.Radiobutton(red_type_frame, text="Computer", variable=self.red_player_type, value="Computer", bg="#E9967A").pack(anchor=tk.W)
+        # Red players type controls 
+        red_type_frame = tk.Frame(player_type_frame, bd=4, relief=tk.RAISED, bg="#ec4e4e")
+        tk.Label(red_type_frame, text="Red Player:", font=("Helvetica", 10, "bold"), bg="#a41228").pack()
+        tk.Radiobutton(red_type_frame, text="Human", variable=self.red_player_type, value="Human", bg="#ec4e4e").pan(anchor=tk.W)
+        tk.Radiobutton(red_type_frame, text="Computer", variable=self.red_player_type).pack(anchor=tk.Wf.red_player_type, value="Computer", bg="#ec4e4e")
         red_type_frame.grid(row=0, column=0, padx=10)
 
-        # Blue player type controls
-        blue_type_frame = tk.Frame(player_type_frame, bd=5, relief=tk.RAISED, bg="#1E90FF")
-        tk.Label(blue_type_frame, text="Blue Player:", font=("Helvetica", 10, "bold"), bg="#1E90FF").pack()
-        tk.Radiobutton(blue_type_frame, text="Human", variable=self.blue_player_type, value="Human", bg="#1E90FF").pack(anchor=tk.W)
-        tk.Radiobutton(blue_type_frame, text="Computer", variable=self.blue_player_type, value="Computer", bg="#1E90FF").pack(anchor=tk.W)
+        # Blue players type control 
+        blue_type_frame = tk.Frame(player_type_frame, bd=4, relief=tk.RAISED, bg="#3884f7")
+        tk.Label(blue_type_frame, text="Blue Player:", font=("Helvetica", 10, "bold"), bg="#1010b0").pack()
+        tk.Radiobutton(blue_type_frame, text="Human", variable=self.blue_player_type, value="Human", bg="#3884f7").pack(anchor=tk.W)
+        tk.Radiobutton(blue_type_frame, text="Computer", variable=self.blue_player_type, value="Computer", bg="#3884f7").pack(anchor=tk.W)
         blue_type_frame.grid(row=0, column=1, padx=10)
+    
+    def _create_start_button_frame(self):
+        """Creates the start game button frame"""
+        start_frame = tk.Frame(self.start_menu, bd=4, relief=tk.RIDGE, bg="#cacaaa")
+        tk.Button(start_frame, text="Start Game", height=2, bg="#eec584", fg="#55868c", command=self.start_game).grid(row=0, column=0, padx=5, pady=5)
+        start_frame.grid(row=5, column=0, columnspan=2, pady=5)
 
-        # Making the Start Game Button
-        start_frame = tk.Frame(self.start_menu, bd=5, relief=tk.RIDGE, bg="#008B8B")
-        tk.Button(start_frame, text="Start SOS Game", height=2, bg="#FFFAFA", fg="black", command=self.start_game).grid(row=0, column=0, padx=5, pady=5)
-        start_frame.grid(row=5, column=0, columnspan=2, pady=10)
+    def create_start_menu(self):
+        """Sets up the start menu button and main components"""
+        for widget in self.start_menu.winfo_children():
+            widget.destroy()
+
+        title = tk.Label(self.start_menu, text="SOS Game Setup", font=("Helvetica", 10, "bold"), bg="#c8ab83", fg="#55868c")
+        title.grid(row=0, column=0, columnspan=3, pady=5)
+
+        # Attached the needed methods for the start menu 
+        self._create_board_frame()
+        self._create_player_type_frame()
+        self._create_start_button_frame()
+    
+    def _initialize_game_instance(self):
+        """Create the player and game logic instance based on player selections"""
+        pass
+    """Personal Note: Left off in refactoring start_game"""
+
     
     def start_game(self):
         """Starting the game window after players enter settings for SOS Game"""
