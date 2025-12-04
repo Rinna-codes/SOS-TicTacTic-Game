@@ -74,7 +74,6 @@ class SOSLogic(ABC):
             return True, found_sos
         
         return False, [] # Reached if self.board.place returns False
-
                 
     def switch_turn(self):
         """Switch turns between players after each move"""
