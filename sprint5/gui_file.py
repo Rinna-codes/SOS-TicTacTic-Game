@@ -92,84 +92,104 @@ class SOSGame():
     
     def _initialize_game_instance(self):
         """Create the player and game logic instance based on player selections"""
-        pass
-    """Personal Note: Left off in refactoring start_game"""
-
-    
-    def start_game(self):
-        """Starting the game window after players enter settings for SOS Game"""
-        self.start_menu.destroy()
-
-        # Create the game window after set up menu 
-        self.game_window = tk.Tk()
-        self.game_window.title("SOS Game Window")
-        self.game_window.config(bg="#008B8B")
-
-        board_size = self.board_size.get() 
-
+        board_size = self.board_size.get()
         red_type = self.red_player_type.get()
         blue_type = self.blue_player_type.get()
+        game_mode = self.mode.get()
 
         red_player = HumanPlayer("Red") if red_type == "Human" else ComputerPlayer("Red")
         blue_player = HumanPlayer("Blue") if blue_type == "Human" else ComputerPlayer("Blue")
- 
-        game_mode = self.mode.get()
 
         if game_mode == "Simple Game":
             self.game = SimpleMode(board_size, blue_player, red_player)
         else:
             self.game = GeneralMode(board_size, blue_player, red_player)
+        
+        return red_type, blue_type
 
-        # set the the game board and widgets 
-        self.board_buttons = []
+    def _setup_game_window (self):
+        """Destroys the start menu window and starts the main game window"""
+        self.start_menu.destroy()
+        self.game_window = tk.Tk()
+        self.game_window.title("SOS Game Window 🕹️")
+        self.game_window.config(bg="#c8ab83")
+    
+    def _setup_game_board_and_visuals(self, red_type, blue_type):
+        """Sets up the game board, initializes the visuals and starts computer's turn"""
         self.create_game_widgets()
-        self.create_board(board_size)
+        self.create_board(self.game.board.board_size)
 
-        # updates the pkayer labels to show type (Human or computer)
-        self.red_label.config(text=f"Red Player ({red_type})")
-        self.blue_label.config(text=f"Blue Player ({blue_type})")
+        self.red_label.config(text=f"Red Player: ({red_type})")
+        self.blue_label.config(text=f"Blue Player: ({blue_type})")
 
-        # update the letter selection display
-        self.set_letter_selection("Red", self.red_letter_choice.get())
-        self.set_letter_selection("Blue", self.blue_letter_choice.get())
+        # Initialize the visual controls by querying Human default choice to S 
+        self.set_letter_selection("Red", self.game.player_red.get_letter_choice() if isinstance(self.game.player_red, HumanPlayer) else "S")
+        self.set_letter_selection("Blue", self.player_blue.get_letter_choice() if isinstance(self.game.player_blue, HumanPlayer) else "S")
+    
         self.update_turn_display()
         self.update_player_controls()
 
-        # starts the computer seuqnce if the current player is now the computer + add a short delaye for rendering 
-        self.game_window.after(100, self.computer_move_sequence)
+        # Start the computer's swuence if the current player is the computer 
+        self.game_window.after(300, self.computer_move_sequence)
+    
+    def start_game(self): # Major refactor
+        """Starting the game window after players enter settings for SOS Game"""
+        self._setup_game_window()
+
+        red_type, blue_type = self._initialize_game_instance()
+
+        self._setup_game_board_and_visuals(red_type, blue_type)
 
         self.game_window.mainloop()
         
     def set_letter_selection (self, player_color, letter):
-        """Sets the letters to players with toggle"""
-
-        # ONLY set if the current player is human 
-        if self.game and player_color == "Red" and not isinstance(self.game.player_red, HumanPlayer):
-            return None
-        if self.game and player_color == "Blue" and not isinstance(self.game.player_blue, HumanPlayer):
-            return None
+        """Sets the letters by players selection on Human player and update visuals"""
 
         if player_color == "Red":
-            self.red_letter_choice.set(letter)
-            s_btn = self.red_s_button
-            o_btn = self.red_o_button
+            player = self.game.player_red
+            s_button = self.red_s_button
+            o_button = self.red_o_button
             display_labels = self.red_selection_label
         else:
-            self.blue_letter_choice.set(letter)
-            s_btn = self.blue_s_button
-            o_btn = self.blue_o_button
+            player = self.game.player_blue
+            s_button = self.blue_s_button
+            o_button = self.blue_o_button
             display_labels = self.blue_selection_label
 
-        # Highlight the selected letters to show which one is picked 
-        if letter == "S":
-            s_btn.config(bg="#0C530C", relief=tk.RAISED)
-            o_btn.config(bg="SystemButtonFace", relief=tk.SUNKEN)
+        if isinstance(player, HumanPlayer):
+            player.set_letter_choice(letter)
         else:
-            s_btn.config(bg="SystemButtonFace", relief=tk.SUNKEN)
-            o_btn.config(bg="#0C530C", relief=tk.RAISED)
+            return # Prevent the visual update for computer control 
+        
+        # Visually updates based on the state of the current player 
+        current_choice = player.get_letter_choice()
+
+        if current_choice == "S":
+            s_button.config(bg="#ec4e4e", relief=tk.RAISED)
+            o_button.config(bg="SystemButtonFace", relief=tk.SUNKEN)
+        else:
+            s_button.config(bg="SystemButtonFace", relief=tk.SUNKEN)
+            o_button.config(bg="#3884f7", relief=tk.RAISED)
 
         if display_labels:
-            display_labels.config(text=f"Selected Letter: {letter}")
+            display_labels.config(text=f"Selected Letter: {current_choice}")
+    
+    def _create_turn_mode_display(self):
+        """Creates and packs the Turn Label and game mode label displays"""
+        turn_frame = tk.Frame(self.game_window, bd=4, relief=tk.RAISED, bg="#7f636e")
+        self.turn_label = tk.Label(turn_frame, text="...", font=("Helvetica", 16, "bold"), bg="#c8ab83")
+        self.turn_label.pack(padx=5, pady=5)
+        turn_frame.pack(pady=10)
+
+        mode_frame = tk.Frame(self.game_window, bd=3, relief=tk.RAISED, bg="#7f636e")
+        self.mode_lable = tk.Label(mode_frame, text=f"Game Mode: {self.mode.get()}", font=("Helvetica", 14, "bold"), bg="#c8ab83", fg="#55868c")
+        self.mode_label.pack(padx=5, pady=3)
+        mode_frame.pack(pady=5)
+
+    def _create_player_controls(self, color, frame_row, frame_col):
+        pass
+
+    """Personal Note: Left off"""
 
     def create_game_widgets(self):
         """Creates the game widgets in game window"""
