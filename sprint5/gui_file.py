@@ -22,8 +22,8 @@ class SOSGame():
         self.mode = tk.StringVar(value="Simple Game")
 
         # Player types selection
-        self.blue_player = tk.StringVar(value="Human")
-        self.red_player = tk.StringVar(value="Computer")
+        self.blue_player_type = tk.StringVar(value="Human")
+        self.red_player_type = tk.StringVar(value="Computer")
 
         self.game = None
         self.game_window = None
@@ -60,8 +60,8 @@ class SOSGame():
         # Red players type controls 
         red_type_frame = tk.Frame(player_type_frame, bd=4, relief=tk.RAISED, bg="#ec4e4e")
         tk.Label(red_type_frame, text="Red Player:", font=("Helvetica", 10, "bold"), bg="#a41228").pack()
-        tk.Radiobutton(red_type_frame, text="Human", variable=self.red_player_type, value="Human", bg="#ec4e4e").pan(anchor=tk.W)
-        tk.Radiobutton(red_type_frame, text="Computer", variable=self.red_player_type).pack(anchor=tk.Wf.red_player_type, value="Computer", bg="#ec4e4e")
+        tk.Radiobutton(red_type_frame, text="Human", variable=self.red_player_type, value="Human", bg="#ec4e4e").pack(anchor=tk.W)
+        tk.Radiobutton(red_type_frame, text="Computer", variable=self.red_player_type, value="Computer", bg="#ec4e4e").pack(anchor=tk.W)
         red_type_frame.grid(row=0, column=0, padx=10)
 
         # Blue players type control 
@@ -124,7 +124,7 @@ class SOSGame():
 
         # Initialize the visual controls by querying Human default choice to S 
         self.set_letter_selection("Red", self.game.player_red.get_letter_choice() if isinstance(self.game.player_red, HumanPlayer) else "S")
-        self.set_letter_selection("Blue", self.player_blue.get_letter_choice() if isinstance(self.game.player_blue, HumanPlayer) else "S")
+        self.set_letter_selection("Blue", self.game.player_blue.get_letter_choice() if isinstance(self.game.player_blue, HumanPlayer) else "S")
     
         self.update_turn_display()
         self.update_player_controls()
@@ -182,7 +182,7 @@ class SOSGame():
         turn_frame.pack(pady=10)
 
         mode_frame = tk.Frame(self.game_window, bd=3, relief=tk.RAISED, bg="#7f636e")
-        self.mode_lable = tk.Label(mode_frame, text=f"Game Mode: {self.mode.get()}", font=("Helvetica", 14, "bold"), bg="#c8ab83", fg="#55868c")
+        self.mode_label = tk.Label(mode_frame, text=f"Game Mode: {self.mode.get()}", font=("Helvetica", 14, "bold"), bg="#c8ab83", fg="#55868c")
         self.mode_label.pack(padx=5, pady=3)
         mode_frame.pack(pady=5)
 
@@ -206,7 +206,7 @@ class SOSGame():
         controls_frame.grid(row=frame_row, column=frame_col, padx=20, pady=10, sticky=tk.N)
 
         player_frame = tk.Frame(controls_frame, bd=4, relief=tk.RIDGE, bg=bg_color)
-        setattr(self, player_label_ref, tk.Label(player_frame, text="", bg=accent_color, fg="#55868c"), font=("Helvetica", 14, "bold"))
+        setattr(self, player_label_ref, tk.Label(player_frame, text="", bg=accent_color, fg="#55868c", font=("Helvetica", 14, "bold")))
         getattr(self, player_label_ref).pack(padx=10, pady=5)
         player_frame.pack(pady=10)
 
@@ -228,7 +228,7 @@ class SOSGame():
     def _create_board_canvas(self):
         """Creates the central canvas for the game board"""
         self.board_container = tk.Frame(self.main_game_area_frame, bg="#eec584", bd=4, relief=tk.RIDGE)
-        self.board_container.grid(row=0, column=1, padx=20, adpy=10)
+        self.board_container.grid(row=0, column=1, padx=20, pady=10)
 
         size = (self.board_size.get()) * 75
 
@@ -240,7 +240,7 @@ class SOSGame():
         button_bottom_frame = tk.Frame(self.game_window, bd=4, relief=tk.RIDGE, bg="#7f636e")
         tk.Button(button_bottom_frame, text="REPLAY GAME", height=2, bg="#c8ab83", command=self.reset_game).grid(row=0, column=0, padx=4, pady=4)
         tk.Button(button_bottom_frame, text="NEW GAME", height=2, bg="#c8ab83", command=self.start_game_from_setup).grid(row=0, column=1, padx=4, pady=4)
-        tk.Button(button_bottom_frame, text="EXIT GAME", height=2, bg="#c8ab83", command=self.game_window.destroy()).grid(row=0, column=2, padx=4, pady=4)
+        tk.Button(button_bottom_frame, text="EXIT GAME", height=2, bg="#c8ab83", command=self.game_window.destroy).grid(row=0, column=2, padx=4, pady=4)
         button_bottom_frame.pack(pady=10)
 
     def create_game_widgets(self):
@@ -248,7 +248,7 @@ class SOSGame():
         self._create_turn_mode_display()
 
         # Make the frame for the game area
-        self.main_game_area_frame = tk.Frame(self.game_wiindow, bg="#c8ab83")
+        self.main_game_area_frame = tk.Frame(self.game_window, bg="#c8ab83")
         self.main_game_area_frame.pack(pady=10)
 
         # Red player info 
@@ -295,6 +295,34 @@ class SOSGame():
                 self.canvas.create_window(x_center, y_center, window=button, anchor=tk.CENTER, width=cell_width, height=cell_height)
                 row_buttons.append(button)
             self.board_buttons.append(row_buttons)
+    
+    def _get_current_player_letter(self, current_player_color):
+        """Returns the letter selected by the human player"""
+        if current_player_color == "Red":
+            player = self.game.player_red
+        else:
+            player = self.game.player_blue
+
+        if isinstance(player, HumanPlayer):
+            return player.get_letter_choice()
+        
+        # a fall back
+        return "S"
+    
+    def _handle_human_turns(self, row, col, letter):
+        """Processes the moves, updates visuals and starts the computer turn if need to"""
+        success, _ = self.game.making_move(row, col, letter)
+
+        if success:
+            self.process_visual_updates(row, col, letter)
+
+            if not self.game.is_game_over:
+                self.update_turn_display()
+                self.update_player_controls()
+
+                # Starts the computer's turn sequence if the turn switched to the computer player 
+                if isinstance(self.game.current_turn, ComputerPlayer):
+                    self.game_window.after(400, self. computer_move_sequence)
 
     def handle_clicks(self, row, col):
         """Handles the clicks or events for Human Player on the game board"""
@@ -304,26 +332,10 @@ class SOSGame():
         # Current players clicks go through ONLY if current player is the human player 
         if not isinstance(current_player_before_move, HumanPlayer):
             return None 
+        
+        letter = self._get_current_player_letter(current_player_before_move.color)
 
-        if current_player_before_move.color == "Red":
-            letter = self.red_letter_choice.get()
-        else: 
-            letter = self.blue_letter_choice.get()
-
-        success = self.game.making_move(row, col, letter)
-
-        if success: 
-            self.process_visual_updates(row, col, letter)
-
-            if not self.game.is_game_over:
-                self.update_turn_display()
-                self.update_player_controls()
-
-                current_player_before_move = self.game.current_turn
-
-                # start the computers move sequence with a slight delay 
-                if isinstance(current_player_before_move, ComputerPlayer):
-                    self.game_window.after(60, self.computer_move_sequence)
+        self._handle_human_turns(row, col, letter)
 
     def update_turn_display(self):
         """Updates turn labels and scores"""
@@ -332,8 +344,13 @@ class SOSGame():
         red_score = self.game.score_count.get("Red", 0)
         blue_score = self.game.score_count.get("Blue", 0)
 
-        if self.game.is_game_over:
-            return None
+        if self.game.is_game_over: # only display when game IS over
+            final_text = f"Blue Score: {blue_score} || Red Score: {red_score}"
+
+            # Prevents overwriting 
+            if "GAME OVER" not in self.turn_label.cget("text"):
+                self.turn_label.config(text=f"GAME OVER\n{final_text}")
+            return
         
         current_player_color = self.game.current_turn.color
 
@@ -367,8 +384,10 @@ class SOSGame():
     def process_visual_updates(self, row, col, letter):
         """Updates the GUI game board"""
 
-        if self.board_buttons and 0 <= row < len(self.board_buttons) and 0 <= col < len(self.board_buttons[0]):
-            self.board_buttons[row][col].config(text=letter, state=tk.DISABLED)
+        if not (self.board_buttons and 0 <= row < len(self.board_buttons) and 0 <= col < len(self.board_buttons[0])):
+            return None
+
+        self.board_buttons[row][col].config(text=letter, state=tk.DISABLED)
 
         if self.game.is_game_over:
             self.end_game()
@@ -407,7 +426,7 @@ class SOSGame():
         if computer_move:
             row, col, letter = computer_move 
             
-            success = self.game.making_move(row, col, letter)
+            success, _ = self.game.making_move(row, col, letter)
 
             if success:
                 self.process_visual_updates(row, col, letter)
@@ -434,8 +453,9 @@ class SOSGame():
             self.create_board(self.game.board.board_size)
 
         # update the user interface buttons/elements
-        self.set_letter_selection("Red", "S")
-        self.set_letter_selection("Blue", "S")
+        self.set_letter_selection("Red", self.game.player_red.get_letter_choice() if isinstance(self.game.player_red, HumanPlayer) else "S")
+        self.set_letter_selection("Blue", self.game.player_blue.get_letter_choice() if isinstance(self.game.player_blue, HumanPlayer) else "S")
+
         self.update_turn_display()
         self.update_player_controls()
 
@@ -453,13 +473,14 @@ class SOSGame():
 
         red_score = self.game.score_count.get("Red", 0)
         blue_score = self.game.score_count.get("Blue", 0)
+        final_score = f"FINAL SCORE: BLUE {blue_score} || RED SCORE: {red_score}"
 
         if winner_color == "Draw":
             self.turn_label.config(text=f"GAME OVER: IT'S A DRAW! ({mode})")
-            messagebox.showinfo("Game Over", f"The {mode} has ended in a DRAW!\nFINAL SCORE: BLUE {blue_score} || RED {red_score}")
+            messagebox.showinfo("Game Over", f"The {mode} has ended in a DRAW!\n{final_score}")
         else:
             self.turn_label.config(text=f"GAME OVER: {winner_color.upper()} WINS! ({mode})")
-            messagebox.showinfo("Game Over", f"The {self.mode.get()} WINNER is: {winner_color.upper()}!\nFINAL SCORE: BLUE {blue_score} || RED {red_score}")
+            messagebox.showinfo("Game Over", f"The {self.mode.get()} WINNER is: {winner_color.upper()}!\n{final_score}")
             
     def start_game_from_setup(self):
         """Exits the current game window and reopens the setup menu"""
