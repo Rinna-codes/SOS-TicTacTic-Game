@@ -168,7 +168,7 @@ class SOSGame():
             s_button.config(bg="#b0c4b1", relief=tk.RAISED)
             o_button.config(bg="#dedbd2", relief=tk.SUNKEN)
         else:
-            s_button.config(bg="dedbd2", relief=tk.SUNKEN)
+            s_button.config(bg="#dedbd2", relief=tk.SUNKEN)
             o_button.config(bg="#b0c4b1", relief=tk.RAISED)
 
         if display_labels:
@@ -287,7 +287,6 @@ class SOSGame():
                     width=6, 
                     height=3,
                     bg="#f7e1d7",
-                    fg="#4a5759",
                     font=("Helvetica", 20, "bold"),
                     command=lambda r=i,  c=j: self.handle_clicks(r,c))
                 
@@ -323,7 +322,7 @@ class SOSGame():
 
                 # Starts the computer's turn sequence if the turn switched to the computer player 
                 if isinstance(self.game.current_turn, ComputerPlayer):
-                    self.game_window.after(400, self. computer_move_sequence)
+                    self.game_window.after(100, self. computer_move_sequence)
 
     def handle_clicks(self, row, col):
         """Handles the clicks or events for Human Player on the game board"""

@@ -71,6 +71,9 @@ class SOSLogic(ABC):
             # Handle the turn management 
             self._process_turn_management(score_made)
 
+            # Chekcs is the board is full
+            self.check_game_over() 
+
             return True, found_sos
         
         return False, [] # Reached if self.board.place returns False
