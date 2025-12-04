@@ -65,14 +65,20 @@ class SOSLogic(ABC):
         if valid_move:
             found_sos = self.board.check_for_SOS(row, col)
 
-            """====================Personal Note: Left off here===================="""
+            # Handles the scores and line/pattern coordinates 
+            score_made = self._process_found_SOS(found_sos, current_player_color)
+
+            # Handle the turn management 
+            self._process_turn_management(score_made)
+
+            return True, found_sos
+        
+        return False, [] # Reached if self.board.place returns False
+
                 
     def switch_turn(self):
         """Switch turns between players after each move"""
-        if self.current_turn == self.player_blue: 
-            self.current_turn = self.player_red
-        else: 
-            self.current_turn = self.player_blue
+        self.current_turn = self.player_red if self.current_turn == self.player_blue else self.player_blue
 
     def reset(self):
         """Resets the game board"""
