@@ -187,94 +187,81 @@ class SOSGame():
         mode_frame.pack(pady=5)
 
     def _create_player_controls(self, color, frame_row, frame_col):
-        pass
+        """Create the controls such as the lables and letter buttons for a single player (either red or blue)"""
 
-    """Personal Note: Left off"""
-
-    def create_game_widgets(self):
-        """Creates the game widgets in game window"""
-
-        # Turn Label
-        turn_frame = tk.Frame(self.game_window, bd=5, relief=tk.RAISED, bg="#20B2AA")
-        self.turn_label = tk.Label(turn_frame, text="....", font=("Helvetica", 16, "bold"), bg="#FFFAFA")
-        self.turn_label.pack(padx=5, pady=5)
-        turn_frame.pack(pady=10)
-
-        # Game Mode Label 
-        mode_frame  = tk.Frame(self.game_window, bd=3, relief=tk.RIDGE, bg="#008B8B")
-        self.mode_label = tk.Label(mode_frame, text=f"Game Mode: {self.mode.get()}", font=("Helvetica", 14, "bold"), bg="#E0FFFF", fg="black")
-        self.mode_label.pack(padx=5, pady=3)
-        mode_frame.pack(pady=5)
-
-        # Creating the frame for the game area
-        main_game_area_frame = tk.Frame(self.game_window, bg="#008B8B")
-        main_game_area_frame.pack(pady=10)
-
-        # Red player Info
-        red_controls_frame = tk.Frame(main_game_area_frame, bg="#008B8B")
-        red_controls_frame.grid(row=0, column=0, padx=20, pady=10, sticky=tk.N)
-
-        red_frame = tk.Frame(red_controls_frame, bd=5, relief=tk.RIDGE, bg="red")
-        self.red_label = tk.Label(red_frame, text="", bg="#E9967A", fg="black", font=("Helvetica", 14, "bold"))
-        self.red_label.pack(padx=10, pady=5)
-        red_frame.pack(pady=10)
-
-        red_letter_frame = tk.Frame(red_controls_frame, bd=5, relief=tk.RIDGE, bg="#20B2AA")
-        tk.Label(red_letter_frame, text="Selected Move:", bg="#FFFAFA", fg="black").pack(side=tk.TOP, padx=5, pady=5)
-
-        # Red Player toggle buttons for S or O 
-        self.red_s_button = tk.Button(red_letter_frame, text="S", width=4, command=lambda: self.set_letter_selection("Red", "S"))
-        self.red_o_button = tk.Button(red_letter_frame, text="O", width=4, command=lambda: self.set_letter_selection("Red", "O"))
-
-        self.red_s_button.pack(side=tk.LEFT, padx=5)
-        self.red_o_button.pack(side=tk.LEFT, padx=5)
-        red_letter_frame.pack(pady=10)
-
-        # red players selection label 
-        self.red_selection_label = tk.Label(red_controls_frame, text=f"Selected Letter: {self.red_letter_choice.get()}", bg="#008B8B", fg="#FFFAFA")
-        self.red_selection_label.pack(pady=5)
-
-        # Creating the game board 
-        self.board_container = tk.Frame(main_game_area_frame, bg="lightblue", bd=5, relief=tk.RIDGE)
-        self.board_container.grid(row=0, column=1, padx=20, pady=10)
-
-        # Configure the size of game board  
-        size = (self.board_size.get()) * 75
+        if color == "Red":
+            bg_color, accent_color = "#ec4e4e", "#a41228"
+            player_label_ref = "red_label"
+            selection_label_ref = "red_selection_label"
+            s_command = lambda: self.set_letter_selection("Red", "S")
+            o_command = lambda: self.set_letter_selection("Red", "O")
+        else: # For Blue
+            bg_color, accent_color = "#3884f7", "#1010b0"
+            player_label_ref = "blue_label"
+            selection_label_ref = "blue_selection_label"
+            s_command = lambda: self.set_letter_selection("Blue", "S")
+            o_command = lambda: self.set_letter_selection("Blue", "O")
         
+        controls_frame = tk.Frame(self.main_game_area_frame, bg="#7f636e")
+        controls_frame.grid(row=frame_row, column=frame_col, padx=20, pady=10, sticky=tk.N)
+
+        player_frame = tk.Frame(controls_frame, bd=4, relief=tk.RIDGE, bg=bg_color)
+        setattr(self, player_label_ref, tk.Label(player_frame, text="", bg=accent_color, fg="#55868c"), font=("Helvetica", 14, "bold"))
+        getattr(self, player_label_ref).pack(padx=10, pady=5)
+        player_frame.pack(pady=10)
+
+        letter_frame = tk.Frame(controls_frame, bd=4, relief=tk.RIDGE, bg="#7f636e")
+        tk.Label(letter_frame, text="Selected Move:", bg="#c8ab83", fg="#55868c", font=("Helvetica", 14, "bold")).pack(side=tk.TOP, padx=5, pady=5)
+
+        s_button = tk.Button(letter_frame, text="S", width=4, command=s_command)
+        o_button = tk.Button(letter_frame, text="O", width=4, command=o_command)
+        s_button.pack(side=tk.LEFT, padx=5)
+        o_button.pack(side=tk.LEFT, padx=5)
+        letter_frame.pack(pady=10)
+
+        setattr(self, f"{color.lower()}_s_button", s_button)
+        setattr(self, f"{color.lower()}_o_button", o_button)
+
+        setattr(self, selection_label_ref, tk.Label(controls_frame, text=f"Selected Letter: S", bg="#c8ab83", fg="#55868c"))
+        getattr(self, selection_label_ref).pack(pady=5)
+    
+    def _create_board_canvas(self):
+        """Creates the central canvas for the game board"""
+        self.board_container = tk.Frame(self.main_game_area_frame, bg="#eec584", bd=4, relief=tk.RIDGE)
+        self.board_container.grid(row=0, column=1, padx=20, adpy=10)
+
+        size = (self.board_size.get()) * 75
+
         self.canvas = tk.Canvas(self.board_container, width=size, height=size)
         self.canvas.pack(fill="both", expand=True)
-
-        # Blue player Info
-        blue_controls_frame = tk.Frame(main_game_area_frame, bg="#008B8B")
-        blue_controls_frame.grid(row=0, column=2, padx=20, pady=10, sticky=tk.N)
-
-        blue_frame = tk.Frame(blue_controls_frame, bd=5, relief=tk.RIDGE, bg="#0000CD")
-        self.blue_label = tk.Label(blue_frame, text="", bg="#1E90FF", fg="black", font=("Helvetica", 14, "bold"))
-        self.blue_label.pack(padx=10, pady=5)
-        blue_frame.pack(pady=10)
-
-        blue_letter_frame = tk.Frame(blue_controls_frame, bd=5, relief=tk.RIDGE, bg="#20B2AA")
-        tk.Label(blue_letter_frame, text="Selected Move:", bg="#FFFAFA", fg="black").pack(side=tk.TOP, padx=5, pady=5)
-
-        # Blue player toggle button for S or O
-        self.blue_s_button = tk.Button(blue_letter_frame, text="S", width=4, command=lambda: self.set_letter_selection("Blue", "S"))
-        self.blue_o_button = tk.Button(blue_letter_frame, text="O", width=4, command=lambda: self.set_letter_selection("Blue", "O"))
-        
-        self.blue_s_button.pack(side=tk.LEFT, padx=5)
-        self.blue_o_button.pack(side=tk.LEFT, padx=5)
-        blue_letter_frame.pack(pady=10)
-
-        # blue players selection label
-        self.blue_selection_label = tk.Label(blue_controls_frame, text=f"Selected Letter: {self.blue_letter_choice.get()}", bg="#008B8B", fg="#FFFAFA")
-        self.blue_selection_label.pack(pady=5)
-
-        # Bottom Game widget buttons 
-        button_bottom_frame = tk.Frame(self.game_window, bd=5, relief=tk.RIDGE, bg="#008B8B")
-
-        tk.Button(button_bottom_frame, text="REPLAY GAME", height=2, bg="#FFFAFA", command=self.reset_game).grid(row=0, column=0, padx=4, pady=4)
-        tk.Button(button_bottom_frame, text="NEW GAME", height=2, bg="#FFFAFA", command=self.start_game_from_setup).grid(row=0, column=1, padx=4, pady=4)
-        tk.Button(button_bottom_frame, text="EXIT GAME", height=2, bg="#FFFAFA", command=self.game_window.destroy).grid(row=0, column=2, padx=4, pady=4)
+    
+    def _create_bottom_buttons(self):
+        """Creates the Replay, new, and exit game buttons at the bottom of window"""
+        button_bottom_frame = tk.Frame(self.game_window, bd=4, relief=tk.RIDGE, bg="#7f636e")
+        tk.Button(button_bottom_frame, text="REPLAY GAME", height=2, bg="#c8ab83", command=self.reset_game).grid(row=0, column=0, padx=4, pady=4)
+        tk.Button(button_bottom_frame, text="NEW GAME", height=2, bg="#c8ab83", command=self.start_game_from_setup).grid(row=0, column=1, padx=4, pady=4)
+        tk.Button(button_bottom_frame, text="EXIT GAME", height=2, bg="#c8ab83", command=self.game_window.destroy()).grid(row=0, column=2, padx=4, pady=4)
         button_bottom_frame.pack(pady=10)
+
+    def create_game_widgets(self):
+        """Creates all the game widgets in the game window """
+        self._create_turn_mode_display()
+
+        # Make the frame for the game area
+        self.main_game_area_frame = tk.Frame(self.game_wiindow, bg="#c8ab83")
+        self.main_game_area_frame.pack(pady=10)
+
+        # Red player info 
+        self._create_player_controls("Red", 0, 0)
+
+        # Make the game board
+        self._create_board_canvas()
+
+        # Blue player info 
+        self._create_player_controls("Blue", 0, 2)
+
+        # Bottom game widget buttons
+        self._create_bottom_buttons()
 
     def create_board(self, size):
         """Making the button grid for the actual game board"""
