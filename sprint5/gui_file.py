@@ -1,36 +1,41 @@
 import tkinter as tk
-from sos_logic import SimpleMode, GeneralMode
-from player_class import HumanPlayer, ComputerPlayer
+from logic_file import SimpleMode, GeneralMode
+from player_file import HumanPlayer, ComputerPlayer
 from tkinter import messagebox
 
 class SOSGame():
-    def __init__(self):
+    def __init__(self): # Major refactoring
         """Initilize instances/vairables for SOS game"""
+        # Make the root window
+        self._setup_start_menu()
 
-        # Create start_menu instances 
-        self.start_menu = tk.Tk()
-        self.start_menu.title("SOS Start Menu")
-        self.start_menu.config(bg="#008B8B")
+        # Initiate Tkinter variables 
+        self._initialize_game_state()
 
-        # Varaibles for start_menu buttons (board size and mode)
-        self.board_size = tk.IntVar(value=3) 
-        self.mode = tk.StringVar(value="Simple Game")
-
-        # For the player type (Human or Computer) selection variables 
-        self.blue_player_type = tk.StringVar(value="Human")
-        self.red_player_type = tk.StringVar(value="Computer")
-
-        # To start with for letter choices
-        self.red_letter_choice = tk.StringVar(value="S")
-        self.blue_letter_choice = tk.StringVar(value="S")
-        self.red_selection_label = None
-        self.blue_selection_label = None
-
-        self.game = None
-        self.game_window = None 
-        
+        # Process the game GUI    
         self.create_start_menu()
         self.start_menu.mainloop() 
+    
+    def _initialize_game_state(self):
+        """Initialize all the control variables for the start menu and the game state"""
+        self.board_size = tk.IntVar(value=3) # starting default, lowest size available
+        self.mode = tk.StringVar(value="Simple Game")
+
+        # Player types selection
+        self.blue_player = tk.StringVar(value="Human")
+        self.red_player = tk.StringVar(value="Computer")
+
+        self.game = None
+        self.game_window = None
+        self.board_buttons = []
+        self.red_selection_labels = None
+        self.blue_selection_labels = None
+
+    def _setup_start_menu(self):
+        """Sets up the tkinter root for the start menu"""
+        self.start_menu = tk.Tk()
+        self.start_menu.title("SOS Start Menu 👾")
+        self.start_menu.config(bg="#cacaaa")
 
     def create_start_menu(self):
         """Setting up the start menu buttons """
