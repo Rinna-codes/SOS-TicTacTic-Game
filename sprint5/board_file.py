@@ -60,9 +60,32 @@ class Board():
             line_tuple = ((s1_r,s1_c), (row, col), (s2_r, s2_c))
             found_SOS.append(line_tuple)
 
-   
-   
-   def check_for_SOS(self, row, col):
+    def _check_s_first_sos(self, row, col, rd, cd, found_SOS):
+        """Will check for an SOS pattern when the current letter "S" is the first one"""
+        o1_r, o1_c = (row + rd), (col + cd)
+        s1_r, s1_c = row + (2 * rd), col + (2 * cd)
+
+        o1 = self.get_letter(o1_r, o1_c) # Center O in S-O-S
+        s1 = self.get_letter(s1_r, s1_c) # S(first)-O-S
+
+        if s1 == "S" and o1 == "O":
+            line_tuple = ((row, col), (o1_r, o1_c), (s1_r, s1_c))
+            found_SOS.append(line_tuple)
+    
+    def _check_s_last_sos(self, row, col, rd, cd, found_SOS):
+        """Will chekc for an SOS pattern when the current letter "S" is the last one"""
+
+        s2_r, s2_c = row - (2 * rd), col - (2 * cd)
+        o2_r, o2_c = (row - rd), (col - cd)
+
+        s2 = self.get_letter(s2_r, s2_c) # S-O-S(last)
+        o2 = self.get_letter(o2_r, o2_c) # Center O in S-O-S
+
+        if s2 == "S" and o2 == "O":
+            line_tuple = ((s2_r, s2_c), (o2_r, o2_c), (row, col))
+            found_SOS.append(line_tuple)
+
+    def check_for_SOS(self, row, col): # Major refactoring
         """Detects an SOS and return line coordinates"""
         directions = [
             (-1, 0), (1, 0),  # Vertical (N, S)
@@ -74,54 +97,24 @@ class Board():
         found_SOS= [] 
         current_letter = self.get_letter(row, col)
 
-        if current_letter is None: 
+        if current_letter is None:
             return found_SOS
-
-        for rd, cd in directions: # row direction = rd, cd = column direction, refactors to recognize pattern not current letter
-
-            # Current cell is the center O 
-            s1_r, s1_c = (row + rd), (col + cd) 
-            s2_r, s2_c = (row - rd), (col -cd) 
-
-            s1 = self.get_letter(s1_r, s1_c)
-            s2 = self.get_letter(s2_r, s2_c)
-
-            if current_letter == "O" and s1 == "S" and s2 == "S":
-                line_tuple1 = ((s1_r, s1_c), (row, col), (s2_r, s2_c)) 
-                found_SOS.append(line_tuple1)
-
-            # Current cell is the first S 
-            o1_r, o1_c = (row + rd), (col + cd) 
-            s1_r, s1_c = row + (2 * rd), col + (2 * cd)
-
-            o1 = self.get_letter(o1_r, o1_c)
-            s1 = self.get_letter(s1_r, s1_c)
-
-            if current_letter == "S" and o1 == "O" and s1 == "S":
-                line_tuple2 = ((row, col), (o1_r, o1_c), (s1_r, s1_c))
-                found_SOS.append(line_tuple2)
-
-            # Current cell is the last S 
-            s2_r, s2_c = row - (2 * rd), col - (2 * cd)
-            o2_r, o2_c = (row - rd), (col- cd)
-
-            s2 = self.get_letter(s2_r, s2_c)
-            o2 = self.get_letter(o2_r, o2_c)
-
-            if current_letter == "S" and s2 == "S" and o2 == "O":
-                line_tuple3 = ((s2_r, s2_c), (o2_r, o2_c), (row, col))
-                found_SOS.append(line_tuple3)
-
+        
+        for rd, cd in directions:
+            # If the current letter is the O in SOS, check for the center O in pattern
+            if current_letter == "O":
+                self._checks_o_center_sos(row, col, rd, cd, found_SOS)
+            
+            # If the current letter is an S in SOS, check if it is the first or last S
+            if current_letter == "S":
+                self._check_s_first_sos(row, col, rd, cd, found_SOS)
+                self._check_s_last_sos(row, col, rd, cd, found_SOS)
+        
         return found_SOS
     
     def reset(self):
         """Resets the game board, all cells empty"""
-        self.game_board = []
-        for i in range(self.board_size): 
-            row = []
-            for j in range(self.board_size):
-                row.append(None)
-            self.game_board.append(row)
+        self.game_board = self._create_empty_board()
     
     def is_full(self):
         """Checks if the game board is filled"""
