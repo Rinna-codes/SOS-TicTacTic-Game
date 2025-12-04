@@ -35,46 +35,46 @@ class SOSGame():
         """Sets up the tkinter root for the start menu"""
         self.start_menu = tk.Tk()
         self.start_menu.title("SOS Start Menu 👾")
-        self.start_menu.config(bg="#cacaaa")
+        self.start_menu.config(bg="#dedbd2")
     
     def _create_board_frame(self):
         """Creates the Board size and the Game Mode selection"""
 
         # Board Size
-        board_frame = tk.Frame(self.start_menu, bd=3, relief=tk.RIDGE, bg="#cacaaa")
-        tk.Label(board_frame, text="Board Size:", bg="#eec584", fg="#55868c").grid(row=0, column=0, padx=5, pady=5)
-        tk.Spinbox(board_frame, from_=3, to=12, textvariable=self.board_size, width=4).grid(row=0, column=1, padx=5, pady=5)
-        board_frame.grid(row=1, column=1, columnspan=2, pady=5)
+        board_frame = tk.Frame(self.start_menu, bd=4, relief=tk.RIDGE, bg="#f7e1d7")
+        tk.Label(board_frame, text="Board Size:", bg="#dedbd2", fg="#4a5759").grid(row=0, column=0, padx=5, pady=5)
+        tk.Spinbox(board_frame, from_=3, to=12, textvariable=self.board_size, width=5).grid(row=0, column=1, padx=5, pady=5)
+        board_frame.grid(row=1, column=0, columnspan=2, pady=5)
 
         # Game Mode 
-        mode_frame = tk.Frame(self.start_menu, bd=4, relief=tk.RIDGE, bg="#cacaaa")
-        tk.Label(mode_frame, text="Game Mode:", bg="#eec584", fg="#55868c").grid(row=0, column=0, padx=5, pady=5)
+        mode_frame = tk.Frame(self.start_menu, bd=4, relief=tk.RIDGE, bg="#f7e1d7")
+        tk.Label(mode_frame, text="Game Mode:", bg="#dedbd2", fg="#4a5759").grid(row=0, column=0, padx=5, pady=5)
         tk.OptionMenu(mode_frame, self.mode, "Simple Game", "General Game").grid(row=0, column=1, padx=5, pady=5)
         mode_frame.grid(row=2, column=0, columnspan=2, pady=5)
 
     def _create_player_type_frame(self):
         """Creates the Red and Blue Player type selection controls"""
-        player_type_frame = tk.Frame(self.start_menu, bg="#cacaaa")
+        player_type_frame = tk.Frame(self.start_menu, bg="#dedbd2")
         player_type_frame.grid(row=3, column=0, columnspan=3, pady=10)
 
         # Red players type controls 
-        red_type_frame = tk.Frame(player_type_frame, bd=4, relief=tk.RAISED, bg="#ec4e4e")
-        tk.Label(red_type_frame, text="Red Player:", font=("Helvetica", 10, "bold"), bg="#a41228").pack()
-        tk.Radiobutton(red_type_frame, text="Human", variable=self.red_player_type, value="Human", bg="#ec4e4e").pack(anchor=tk.W)
-        tk.Radiobutton(red_type_frame, text="Computer", variable=self.red_player_type, value="Computer", bg="#ec4e4e").pack(anchor=tk.W)
+        red_type_frame = tk.Frame(player_type_frame, bd=4, relief=tk.RAISED, bg="#E9967A")
+        tk.Label(red_type_frame, text="Red Player:", font=("Helvetica", 10, "bold"), bg="#E9967A").pack()
+        tk.Radiobutton(red_type_frame, text="Human", variable=self.red_player_type, value="Human", bg="#E9967A").pack(anchor=tk.W)
+        tk.Radiobutton(red_type_frame, text="Computer", variable=self.red_player_type, value="Computer", bg="#E9967A").pack(anchor=tk.W)
         red_type_frame.grid(row=0, column=0, padx=10)
 
         # Blue players type control 
-        blue_type_frame = tk.Frame(player_type_frame, bd=4, relief=tk.RAISED, bg="#3884f7")
-        tk.Label(blue_type_frame, text="Blue Player:", font=("Helvetica", 10, "bold"), bg="#1010b0").pack()
-        tk.Radiobutton(blue_type_frame, text="Human", variable=self.blue_player_type, value="Human", bg="#3884f7").pack(anchor=tk.W)
-        tk.Radiobutton(blue_type_frame, text="Computer", variable=self.blue_player_type, value="Computer", bg="#3884f7").pack(anchor=tk.W)
+        blue_type_frame = tk.Frame(player_type_frame, bd=4, relief=tk.RAISED, bg="#1E90FF")
+        tk.Label(blue_type_frame, text="Blue Player:", font=("Helvetica", 10, "bold"), bg="#1E90FF").pack()
+        tk.Radiobutton(blue_type_frame, text="Human", variable=self.blue_player_type, value="Human", bg="#1E90FF").pack(anchor=tk.W)
+        tk.Radiobutton(blue_type_frame, text="Computer", variable=self.blue_player_type, value="Computer", bg="#1E90FF").pack(anchor=tk.W)
         blue_type_frame.grid(row=0, column=1, padx=10)
     
     def _create_start_button_frame(self):
         """Creates the start game button frame"""
-        start_frame = tk.Frame(self.start_menu, bd=4, relief=tk.RIDGE, bg="#cacaaa")
-        tk.Button(start_frame, text="Start Game", height=2, bg="#eec584", fg="#55868c", command=self.start_game).grid(row=0, column=0, padx=5, pady=5)
+        start_frame = tk.Frame(self.start_menu, bd=4, relief=tk.RIDGE, bg="#f7e1d7")
+        tk.Button(start_frame, text="Start Game", height=2, bg="#dedbd2", fg="#4a5759", command=self.start_game).grid(row=0, column=0, padx=5, pady=5)
         start_frame.grid(row=5, column=0, columnspan=2, pady=5)
 
     def create_start_menu(self):
@@ -82,7 +82,7 @@ class SOSGame():
         for widget in self.start_menu.winfo_children():
             widget.destroy()
 
-        title = tk.Label(self.start_menu, text="SOS Game Setup", font=("Helvetica", 10, "bold"), bg="#c8ab83", fg="#55868c")
+        title = tk.Label(self.start_menu, text="SOS Game Setup", font=("Helvetica", 10, "bold"), bg="#f7e1d7", fg="#4a5759")
         title.grid(row=0, column=0, columnspan=3, pady=5)
 
         # Attached the needed methods for the start menu 
@@ -112,7 +112,7 @@ class SOSGame():
         self.start_menu.destroy()
         self.game_window = tk.Tk()
         self.game_window.title("SOS Game Window 🕹️")
-        self.game_window.config(bg="#c8ab83")
+        self.game_window.config(bg="#dedbd2")
     
     def _setup_game_board_and_visuals(self, red_type, blue_type):
         """Sets up the game board, initializes the visuals and starts computer's turn"""
@@ -165,24 +165,24 @@ class SOSGame():
         current_choice = player.get_letter_choice()
 
         if current_choice == "S":
-            s_button.config(bg="#ec4e4e", relief=tk.RAISED)
-            o_button.config(bg="SystemButtonFace", relief=tk.SUNKEN)
+            s_button.config(bg="#b0c4b1", relief=tk.RAISED)
+            o_button.config(bg="#dedbd2", relief=tk.SUNKEN)
         else:
-            s_button.config(bg="SystemButtonFace", relief=tk.SUNKEN)
-            o_button.config(bg="#3884f7", relief=tk.RAISED)
+            s_button.config(bg="dedbd2", relief=tk.SUNKEN)
+            o_button.config(bg="#b0c4b1", relief=tk.RAISED)
 
         if display_labels:
             display_labels.config(text=f"Selected Letter: {current_choice}")
     
     def _create_turn_mode_display(self):
         """Creates and packs the Turn Label and game mode label displays"""
-        turn_frame = tk.Frame(self.game_window, bd=4, relief=tk.RAISED, bg="#7f636e")
-        self.turn_label = tk.Label(turn_frame, text="...", font=("Helvetica", 16, "bold"), bg="#c8ab83")
+        turn_frame = tk.Frame(self.game_window, bd=4, relief=tk.RAISED, bg="#f7e1d7")
+        self.turn_label = tk.Label(turn_frame, text="...", font=("Helvetica", 16, "bold"), bg="#dedbd2", fg="#4a5759")
         self.turn_label.pack(padx=5, pady=5)
         turn_frame.pack(pady=10)
 
-        mode_frame = tk.Frame(self.game_window, bd=3, relief=tk.RAISED, bg="#7f636e")
-        self.mode_label = tk.Label(mode_frame, text=f"Game Mode: {self.mode.get()}", font=("Helvetica", 14, "bold"), bg="#c8ab83", fg="#55868c")
+        mode_frame = tk.Frame(self.game_window, bd=3, relief=tk.RAISED, bg="#f7e1d7")
+        self.mode_label = tk.Label(mode_frame, text=f"Game Mode: {self.mode.get()}", font=("Helvetica", 14, "bold"), bg="#dedbd2", fg="#4a5759")
         self.mode_label.pack(padx=5, pady=3)
         mode_frame.pack(pady=5)
 
@@ -190,28 +190,28 @@ class SOSGame():
         """Create the controls such as the lables and letter buttons for a single player (either red or blue)"""
 
         if color == "Red":
-            bg_color, accent_color = "#ec4e4e", "#a41228"
+            bg_color, accent_color = "#E9967A", "#E9967A"
             player_label_ref = "red_label"
             selection_label_ref = "red_selection_label"
             s_command = lambda: self.set_letter_selection("Red", "S")
             o_command = lambda: self.set_letter_selection("Red", "O")
         else: # For Blue
-            bg_color, accent_color = "#3884f7", "#1010b0"
+            bg_color, accent_color = "#1E90FF", "#1E90FF"
             player_label_ref = "blue_label"
             selection_label_ref = "blue_selection_label"
             s_command = lambda: self.set_letter_selection("Blue", "S")
             o_command = lambda: self.set_letter_selection("Blue", "O")
         
-        controls_frame = tk.Frame(self.main_game_area_frame, bg="#7f636e")
+        controls_frame = tk.Frame(self.main_game_area_frame, bg="#dedbd2")
         controls_frame.grid(row=frame_row, column=frame_col, padx=20, pady=10, sticky=tk.N)
 
         player_frame = tk.Frame(controls_frame, bd=4, relief=tk.RIDGE, bg=bg_color)
-        setattr(self, player_label_ref, tk.Label(player_frame, text="", bg=accent_color, fg="#55868c", font=("Helvetica", 14, "bold")))
+        setattr(self, player_label_ref, tk.Label(player_frame, text="", bg=accent_color, fg="white", font=("Helvetica", 14, "bold")))
         getattr(self, player_label_ref).pack(padx=10, pady=5)
         player_frame.pack(pady=10)
 
-        letter_frame = tk.Frame(controls_frame, bd=4, relief=tk.RIDGE, bg="#7f636e")
-        tk.Label(letter_frame, text="Selected Move:", bg="#c8ab83", fg="#55868c", font=("Helvetica", 14, "bold")).pack(side=tk.TOP, padx=5, pady=5)
+        letter_frame = tk.Frame(controls_frame, bd=4, relief=tk.RIDGE, bg="#f7e1d7")
+        tk.Label(letter_frame, text="Selected Move:", bg="#dedbd2", fg="#4a5759", font=("Helvetica", 14, "bold")).pack(side=tk.TOP, padx=5, pady=5)
 
         s_button = tk.Button(letter_frame, text="S", width=4, command=s_command)
         o_button = tk.Button(letter_frame, text="O", width=4, command=o_command)
@@ -222,12 +222,12 @@ class SOSGame():
         setattr(self, f"{color.lower()}_s_button", s_button)
         setattr(self, f"{color.lower()}_o_button", o_button)
 
-        setattr(self, selection_label_ref, tk.Label(controls_frame, text=f"Selected Letter: S", bg="#c8ab83", fg="#55868c"))
+        setattr(self, selection_label_ref, tk.Label(controls_frame, text=f"Selected Letter: S", bg="#dedbd2", fg="#4a5759"))
         getattr(self, selection_label_ref).pack(pady=5)
     
     def _create_board_canvas(self):
         """Creates the central canvas for the game board"""
-        self.board_container = tk.Frame(self.main_game_area_frame, bg="#eec584", bd=4, relief=tk.RIDGE)
+        self.board_container = tk.Frame(self.main_game_area_frame, bg="#f7e1d7", bd=4, relief=tk.RIDGE)
         self.board_container.grid(row=0, column=1, padx=20, pady=10)
 
         size = (self.board_size.get()) * 75
@@ -237,10 +237,10 @@ class SOSGame():
     
     def _create_bottom_buttons(self):
         """Creates the Replay, new, and exit game buttons at the bottom of window"""
-        button_bottom_frame = tk.Frame(self.game_window, bd=4, relief=tk.RIDGE, bg="#7f636e")
-        tk.Button(button_bottom_frame, text="REPLAY GAME", height=2, bg="#c8ab83", command=self.reset_game).grid(row=0, column=0, padx=4, pady=4)
-        tk.Button(button_bottom_frame, text="NEW GAME", height=2, bg="#c8ab83", command=self.start_game_from_setup).grid(row=0, column=1, padx=4, pady=4)
-        tk.Button(button_bottom_frame, text="EXIT GAME", height=2, bg="#c8ab83", command=self.game_window.destroy).grid(row=0, column=2, padx=4, pady=4)
+        button_bottom_frame = tk.Frame(self.game_window, bd=4, relief=tk.RIDGE, bg="#f7e1d7")
+        tk.Button(button_bottom_frame, text="REPLAY GAME", height=2, bg="#dedbd2", command=self.reset_game, fg="#4a5759").grid(row=0, column=0, padx=4, pady=4)
+        tk.Button(button_bottom_frame, text="NEW GAME", height=2, bg="#dedbd2", command=self.start_game_from_setup, fg="#4a5759").grid(row=0, column=1, padx=4, pady=4)
+        tk.Button(button_bottom_frame, text="EXIT GAME", height=2, bg="#dedbd2", command=self.game_window.destroy, fg="#4a5759").grid(row=0, column=2, padx=4, pady=4)
         button_bottom_frame.pack(pady=10)
 
     def create_game_widgets(self):
@@ -248,7 +248,7 @@ class SOSGame():
         self._create_turn_mode_display()
 
         # Make the frame for the game area
-        self.main_game_area_frame = tk.Frame(self.game_window, bg="#c8ab83")
+        self.main_game_area_frame = tk.Frame(self.game_window, bg="#dedbd2")
         self.main_game_area_frame.pack(pady=10)
 
         # Red player info 
@@ -286,7 +286,8 @@ class SOSGame():
                     text="",
                     width=6, 
                     height=3,
-                    bg="white",
+                    bg="#f7e1d7",
+                    fg="#4a5759",
                     font=("Helvetica", 20, "bold"),
                     command=lambda r=i,  c=j: self.handle_clicks(r,c))
                 
