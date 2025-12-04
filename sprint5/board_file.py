@@ -2,17 +2,23 @@ class Board():
     def __init__(self, board_size):
         """Initiate the 2d nested list for board"""
         self.board_size = board_size
-        self.game_board = []
+        self.game_board = self._create_empty_board()
 
-        for i in range(board_size): 
-            row = []
-            for j in range(board_size):
-                row.append(None)
-            self.game_board.append(row)
+    def _create_empty_board(self):
+        """Creates and returns a new, empty 2D nested list (board)"""
+        game_board = []
+        for _ in range(self.board_size):
+            row = [None] * self.board_size # changed for clealiness and shorter lines
+            game_board.append(row)
+        return game_board
+
+    def _is_value_coordinates(self, row, col):
+        """Checks if the coordinates of the SOS patter is within the board boundaries"""
+        return 0 <= row < self.board_size and 0 <= col < self.board_size
 
     def is_cell_empty(self, row, col):
-        """Checks if board cell is empty and checks boundaries"""
-        if not (0 <= row < self.board_size and 0 <= col < self.board_size):
+        """Checks if board cell is empty and double checks the board boundaries"""
+        if not self._is_value_coordinates(row, col):
             return False
         return self.game_board[row][col] is None 
 
@@ -22,23 +28,41 @@ class Board():
             return False
         
         self.game_board[row][col] = (letter, color)
-
         return True 
 
     def unplace(self, row, col):
         """Remove the content of a cell, make it empty again"""
-        if 0 <= row < self.board_size and 0 <= col < self.board_size:
-            self.game_board[row][col] = None 
+        if not self._is_value_coordinates(row, col):
+            return 
+        
+        self.game_board[row][col] = None 
 
     def get_letter(self, row, col):
-        """Returns the letter (S or O) from a cell or None"""
-        if 0 <= row < self.board_size and 0 <= col < self.board_size:
-            content = self.game_board[row][col]
-            if content is not None: 
-                return content[0] 
+        """Returns the letter (S or O) from an occupied cell or None for empty cell"""
+        if not self._is_value_coordinates(row, col):
+            return None
+        
+        content = self.game_board[row][col]
+
+        if content is not None: 
+            return content[0] 
         return None
  
-    def check_for_SOS(self, row, col):
+    def _checks_o_center_sos(self, row, col, rd, cd, found_SOS):
+        """Will check for an SOS pattern when current letter "O" is in the middle"""
+        s1_r, s1_c = (row - rd), (col - cd)
+        s2_r, s2_c = (row + rd), (col + cd)
+
+        s1 = self.get_letter(s1_r, s1_c) # First S in S-O-S
+        s2 = self.get_letter(s2_r, s2_c) # Second S in S-O-S
+
+        if s1 == "S" and s2 == "S":
+            line_tuple = ((s1_r,s1_c), (row, col), (s2_r, s2_c))
+            found_SOS.append(line_tuple)
+
+   
+   
+   def check_for_SOS(self, row, col):
         """Detects an SOS and return line coordinates"""
         directions = [
             (-1, 0), (1, 0),  # Vertical (N, S)
