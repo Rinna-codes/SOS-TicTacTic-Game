@@ -9,6 +9,7 @@ class SOSLogic(ABC):
         self.player_red = player_red
         self.current_turn = player_blue 
         self.score_count = {self.player_blue.color : 0, self.player_red.color : 0} # sets the initial score to zero 
+        self.move_history = [] # Store all the player's moves 
     
         self.is_game_over = False
         self.game_mode = ""
@@ -63,6 +64,10 @@ class SOSLogic(ABC):
         valid_move = self.board.place(row, col, letter, current_player_color) 
 
         if valid_move:
+            # Records the move before an SOS is processed & switching turns 
+            move_data = (row, col, letter, current_player_color) # player move info tuple
+            self.move_history.append(move_data)
+            
             found_sos = self.board.check_for_SOS(row, col)
 
             # Handles the scores and line/pattern coordinates 
