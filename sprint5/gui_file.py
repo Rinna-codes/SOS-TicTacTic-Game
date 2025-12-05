@@ -243,13 +243,18 @@ class SOSGame():
         self.canvas.pack(fill="both", expand=True)
     
     def _create_bottom_buttons(self):
-        """Creates the Replay, new,exit game, and record buttons at the bottom of window"""
+        """Creates the Replay, new, and exit game buttons at the bottom of window"""
         button_bottom_frame = tk.Frame(self.game_window, bd=5, relief=tk.RIDGE, bg="#f7e1d7")
         tk.Button(button_bottom_frame, text="REPLAY GAME", height=2, bg="#dedbd2", command=self.reset_game, fg="#4a5759").grid(row=0, column=0, padx=4, pady=4)
         tk.Button(button_bottom_frame, text="NEW GAME", height=2, bg="#dedbd2", command=self.start_game_from_setup, fg="#4a5759").grid(row=0, column=1, padx=4, pady=4)
         tk.Button(button_bottom_frame, text="EXIT GAME", height=2, bg="#dedbd2", command=self.game_window.destroy, fg="#4a5759").grid(row=0, column=2, padx=4, pady=4)
-        tk.Checkbutton(button_bottom_frame, text="RECORD", height=2, bg="#dedbd2", command=self.record_game, fg="#4a5759").grid(row=0, column=3, padx=4, pady=4, sticky=tk.W)
         button_bottom_frame.pack(pady=10)
+    
+    def _create_record_button(self):
+        """Create the record check button"""
+        record_frame = tk.Frame(self.game_window, bd=5, relief=tk.RIDGE, bg="#f7e1d7")
+        tk.Checkbutton(record_frame, text="RECORD", height=2, bg="#dedbd2", command=self.record_game, fg="#4a5759").grid(padx=4, pady=4)
+        record_frame.pack(padx=10, pady=10)
     
     def record_game(self):
         """Saves the current game state to a file"""
@@ -293,6 +298,9 @@ class SOSGame():
 
         # Bottom game widget buttons
         self._create_bottom_buttons()
+
+        # Record game widget button
+        self._create_record_button()
 
     def create_board(self, size):
         """Making the button grid for the actual game board"""
