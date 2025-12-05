@@ -12,3 +12,4 @@ It was built using:
   * Replay Game Button
   * New Game Button
   * Game Mode Selection
+  * Basic AI/Computer Opponent
