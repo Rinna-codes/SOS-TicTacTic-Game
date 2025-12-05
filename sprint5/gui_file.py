@@ -15,7 +15,8 @@ class SOSGame():
         # Process the game GUI    
         self.create_start_menu()
         self.start_menu.mainloop() 
-    
+
+   # -------- Private methods for create_start_menu -------- 
     def _initialize_game_state(self):
         """Initialize all the control variables for the start menu and the game state"""
         self.board_size = tk.IntVar(value=3) # starting default, lowest size available
@@ -89,6 +90,8 @@ class SOSGame():
         self._create_board_frame()
         self._create_player_type_frame()
         self._create_start_button_frame()
+
+    # -------- Private methods for start_game method -------- 
     
     def _initialize_game_instance(self):
         """Create the player and game logic instance based on player selections"""
@@ -173,7 +176,9 @@ class SOSGame():
 
         if display_labels:
             display_labels.config(text=f"Selected Letter: {current_choice}")
-    
+
+    # -------- Private methods for create_game_widgets -------- 
+
     def _create_turn_mode_display(self):
         """Creates and packs the Turn Label and game mode label displays"""
         turn_frame = tk.Frame(self.game_window, bd=4, relief=tk.RAISED, bg="#f7e1d7")
