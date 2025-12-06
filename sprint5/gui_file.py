@@ -255,7 +255,7 @@ class SOSGame():
     def _create_record_button(self):
         """Create the record check button"""
         record_frame = tk.Frame(self.game_window, bd=5, relief=tk.RIDGE, bg="#f7e1d7")
-        tk.Checkbutton(record_frame, text="RECORD", height=2, bg="#dedbd2", command=self.record_game, fg="#4a5759").grid(padx=4, pady=4)
+        tk.Checkbutton(record_frame, text="RECORD", height=2, bg="#dedbd2", command=self.record_game, fg="#4a5759").grid(padx=5, pady=5)
         record_frame.pack(padx=10, pady=10)
     
     def record_game(self):
@@ -285,8 +285,6 @@ class SOSGame():
         """Create the replay and next move buttons"""
         replay_frame = tk.Frame()
         pass
-
-
 
     def create_game_widgets(self):
         """Creates all the game widgets in the game window """
