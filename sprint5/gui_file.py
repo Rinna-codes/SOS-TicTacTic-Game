@@ -250,6 +250,8 @@ class SOSGame():
         tk.Button(button_bottom_frame, text="EXIT GAME", height=2, bg="#dedbd2", command=self.game_window.destroy, fg="#4a5759").grid(row=0, column=2, padx=4, pady=4)
         button_bottom_frame.pack(pady=10)
     
+    # -------- Private method for record widget --------
+
     def _create_record_button(self):
         """Create the record check button"""
         record_frame = tk.Frame(self.game_window, bd=5, relief=tk.RIDGE, bg="#f7e1d7")
@@ -278,6 +280,13 @@ class SOSGame():
             with open(file_path, 'w') as f: 
                 json.dump(game_data, f, indent=3)
             messagebox.showinfo("Save Game", f"Game saved was successfully to {file_path}")
+
+    def _create_replay_game_buttons(self):
+        """Create the replay and next move buttons"""
+        replay_frame = tk.Frame()
+        pass
+
+
 
     def create_game_widgets(self):
         """Creates all the game widgets in the game window """
