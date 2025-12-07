@@ -309,7 +309,39 @@ class SOSGame():
                 self.start_replay_sequence(game_data)
             
             except json.JSONDecodeError:
-                messagebox.showerror("Replay Error", "Could not read the game record file (Invalid JSON Format)")
+                messagebox.showerror("Replay Error", "Could not read the game record file (Invalid JSON Format).")
+            except Exception as e:
+                messagebox.showerror("Replay Error", f"An error occured: {e}")
+        
+    def start_replay_sequence(self, game_data):
+        """Starts the game window that was saved and sets up the game to replay"""
+
+        # sets yo the game logic instance
+        board_size = game_data["board_size"]
+        game_mode = game_data["game_mode"]
+
+        # To replay, players are placeholders for moves to be loaded
+        red_player = HumanPlayer("Red")
+        blue_player = HumanPlayer("Blue")
+
+        if game_mode == "Simple Game":
+            self.game = SimpleMode(board_size, blue_player, red_player)
+        else: 
+            self.game = GeneralMode(board_size, blue_player, red_player)
+
+        # Set up the gui for replace sequence 
+        self._setup_game_window()
+        self._setup_game_board_and_visuals("Replay", "Replay")
+
+        # Disable all the controls during sequence 
+        self.update_player_controls()
+
+        # start the moves iteration
+        self.moves_to_replay = game_data["move_history"]
+        self.current_move_indx = 0
+        self.game_window.after(500, self.execute_next_replay_move)
+
+        self.game_window.mainloop()
 
 
     def create_game_widgets(self):
