@@ -286,6 +286,32 @@ class SOSGame():
                 json.dump(game_data, f, indent=3)
             messagebox.showinfo("Save Game", f"Game saved was successfully to {file_path}")
 
+    def load_game_to_replay(self):
+        """Will load a recorded game file and start the replaying sequence"""
+
+        file_path = filedialog.askopenfilename(
+            defaultextension=".txt",
+            filetypes=[("Text files", "*.txt"), ("All files", "*.*")],
+            title = "Load Game Record for Replay"
+        )
+
+        if file_path:
+            try:
+                with open(file_path, 'r') as file:
+                    game_data = json.load(file)
+
+                # Will check for the required data inside the record file 
+                if "board_size" not in game_data or "game_mode" not in game_data or "move_history" not in game_data: 
+                    messagebox.showerror("Replay Errorr", "An invalid game file format")
+                    return 
+                
+                # start the replay sequnce of the record file 
+                self.start_replay_sequence(game_data)
+            
+            except json.JSONDecodeError:
+                messagebox.showerror("Replay Error", "Could not read the game record file (Invalid JSON Format)")
+
+
     def create_game_widgets(self):
         """Creates all the game widgets in the game window """
         self._create_turn_mode_display()
