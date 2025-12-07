@@ -7,9 +7,9 @@ It was built using:
 * Pytest
 
 ## 👾 Features
-  * Red and Blue Player Selections
   * Human and Computer Player Selections
   * Replay Game Button
   * New Game Button
-  * Game Mode Selection
+  * Game Mode Selection: Simple and General Mode
   * Basic AI/Computer Opponent
+  * Record Game Button
