@@ -74,10 +74,15 @@ class SOSGame():
         tk.Radiobutton(blue_type_frame, text="Computer", variable=self.blue_player_type, value="Computer", bg="#1E90FF").pack(anchor=tk.W)
         blue_type_frame.grid(row=0, column=1, padx=10)
     
-    def _create_start_button_frame(self):
-        """Creates the start game button frame"""
+    def _create_starting_game_frame(self):
+        """Creates the start game button and the replay button within a single frame in game setup"""
         start_frame = tk.Frame(self.start_menu, bd=5, relief=tk.RIDGE, bg="#f7e1d7")
+
+        # Start Game Button
         tk.Button(start_frame, text="Start Game", height=2, bg="#dedbd2", fg="#4a5759", command=self.start_game).grid(row=0, column=0, padx=5, pady=5)
+
+        # Replay Game Button
+        tk.Button(start_frame, text="Replay Game", height=2, bg="#dedbd2", fg="#4a5759", command=self.load_game_to_replay).grid(row=0, column=1, padx=5, pady=5)
         start_frame.grid(row=5, column=0, columnspan=2, pady=5)
 
     def create_start_menu(self):
@@ -91,7 +96,7 @@ class SOSGame():
         # Attached the needed methods for the start menu 
         self._create_board_frame()
         self._create_player_type_frame()
-        self._create_start_button_frame()
+        self._create_starting_game_frame()
 
     # -------- Private methods for start_game method -------- 
     
@@ -427,7 +432,7 @@ class SOSGame():
 
         if not (self.board_buttons and 0 <= row < len(self.board_buttons) and 0 <= col < len(self.board_buttons[0])):
             return None
-
+ 
         self.board_buttons[row][col].config(text=letter, state=tk.DISABLED)
 
         if self.game.is_game_over:
