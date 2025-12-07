@@ -329,7 +329,7 @@ class SOSGame():
         else: 
             self.game = GeneralMode(board_size, blue_player, red_player)
 
-        # Set up the gui for replace sequence 
+        # Set up the gui for replay sequence 
         self._setup_game_window()
         self._setup_game_board_and_visuals("Replay", "Replay")
 
@@ -342,7 +342,25 @@ class SOSGame():
         self.game_window.after(500, self.execute_next_replay_move)
 
         self.game_window.mainloop()
+    
+    def execute_next_replay_move(self):
+        """Executes the next move in the replay sequence"""
 
+        if self.current_move_indx < len(self.moves_to_replay):
+            row, col, letter, player_color = self.moves_to_replay[self.current_move_indx]
+
+            # Use board to player a letter and get the color of player 
+            self.game.board.place(row, col, letter, player_color)
+
+            # Update the visuals
+            self.board_buttons[row][col].config(text=letter, state=tk.DISABLED, fg=player_color)
+            self.turn_label.config(text=f"Replaying Move {self.current_move_indx + 1}: {player_color} placed {letter} at {row}, {col}")
+
+            # Set the schedule for the next move 
+            self.game_window.after(700, self.execute_next_replay_move)
+        else:
+            messagebox.showinfo("Replay Finished", "Game Replay is completed.")
+            self.turn_label.config(text="REPLAY FINISHED ⌛️")
 
     def create_game_widgets(self):
         """Creates all the game widgets in the game window """
