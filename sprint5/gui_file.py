@@ -356,6 +356,8 @@ class SOSGame():
             self.board_buttons[row][col].config(text=letter, state=tk.DISABLED, fg=player_color)
             self.turn_label.config(text=f"Replaying Move {self.current_move_indx + 1}: {player_color} placed {letter} at {row}, {col}")
 
+            self.current_move_indx += 1
+
             # Set the schedule for the next move 
             self.game_window.after(700, self.execute_next_replay_move)
         else:
@@ -509,7 +511,7 @@ class SOSGame():
         if not (self.board_buttons and 0 <= row < len(self.board_buttons) and 0 <= col < len(self.board_buttons[0])):
             return None
  
-        self.board_buttons[row][col].config(text=letter, state=tk.DISABLED)
+        self.board_buttons[row][col].config(text=letter, state=tk.DISABLED, fg=self.game.current_turn.color)
 
         if self.game.is_game_over:
             self.end_game()
