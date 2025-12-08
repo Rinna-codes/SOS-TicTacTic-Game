@@ -6,10 +6,9 @@ It was built using:
 * Tkinter
 * Pytest
 
-## 👾 Features
+## 👾 Main Features
   * Human and Computer Player Selections
-  * Replay Game Button
-  * New Game Button
   * Game Mode Selection: Simple and General Mode
   * Basic AI/Computer Opponent
   * Record Game Button
+  * Replay Game Button
