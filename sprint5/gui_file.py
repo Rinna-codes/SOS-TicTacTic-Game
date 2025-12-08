@@ -19,6 +19,7 @@ class SOSGame():
         self.start_menu.mainloop() 
 
    # -------- Private methods for create_start_menu -------- 
+   
     def _initialize_game_state(self):
         """Initialize all the control variables for the start menu and the game state"""
         self.board_size = tk.IntVar(value=3) # starting default, lowest size available
