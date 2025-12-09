@@ -58,7 +58,7 @@ def mock_active_game(mock_game_setup):
 
     return game_app
 
-def text_record_saves_correct_data(mock_active_game):
+def test_record_saves_correct_data(mock_active_game):
     """Makes sure that the record_game writes out the right game state data to the file"""
 
     game_app = mock_active_game
