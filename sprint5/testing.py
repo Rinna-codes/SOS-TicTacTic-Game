@@ -52,3 +52,12 @@ def mock_active_game(mock_game_setup):
     game_app.board_buttons = [[MagicMock(spec=tk.Button) for _ in range(3)] for _ in range(3)]
 
     return game_app
+
+def text_record_saves_correct_data(mock_active_game):
+    """Makes sure that the record_game writes out the right game state data to the file"""
+
+    game_app = mock_active_game
+
+    # Mock the file dialog save
+    DUMMY_PATH = "/tmp/text_game.txt"
+    game_app.MockFileDialog.asksaveasfilename.return_value = DUMMY_PATH
