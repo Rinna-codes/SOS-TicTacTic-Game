@@ -317,7 +317,7 @@ class SOSGame():
     def start_replay_sequence(self, game_data):
         """Starts the game window that was saved and sets up the game to replay"""
 
-        # sets yo the game logic instance
+        # sets up the game logic instance
         board_size = game_data["board_size"]
         game_mode = game_data["game_mode"]
 
