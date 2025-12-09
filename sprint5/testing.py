@@ -3,24 +3,28 @@ import tkinter as tk
 import json
 from unittest.mock import MagicMock, patch
 from gui_file import SOSGame 
+from player_file import HumanPlayer
+
+
+# Attempt at testing replay and record features with fixture 
 
 @pytest.fixture
 def mock_game_setup():
     """Creates a mock tkinter interface and dialog components for testing SOS Game initialization"""
-    with patch('tkinter.tk') as MockTK, \
+    with patch('tkinter.Tk') as MockTk, \
         patch('tkinter.messagebox') as MockMessageBox, \
         patch('tkinter.filedialog') as MockFileDialog, \
         patch('gui_file.SimpleMode', autospec=True) as MockSimpleMode, \
         patch('gui_file.GeneralMode') as MockGeneralMode:
 
         # Make a mock tk instance that are called for initialization
-        mock_root = MockTK.return_value
+        mock_root = MockTk.return_value
         mock_root.winfo_children.return_value =[] 
 
         game_app = SOSGame()
 
         # stick mocks to the fixture for better access
-        game_app.MOCKTK = MockTK
+        game_app.MOCKTK = MockTk
         game_app.MockMessageBox = MockMessageBox
         game_app.MockFileDialog = MockFileDialog
         game_app.MockSimpleMode = MockSimpleMode
@@ -89,3 +93,32 @@ def text_record_saves_correct_data(mock_active_game):
         assert written_dict["board_size"] == expected_data["board_size"]
         assert written_dict["game_mode"] == expected_data["game_mode"]
         assert written_dict["move_history"] == expected_data["move_history"]
+
+def test_start_replay(mock_game_setup):
+    """Checks the right logic (GeneralMode) for replay"""
+    game_app = mock_game_setup
+
+    # Data for the General Game replay
+    game_data = {
+        "board_size": 5,
+        "game_mode": "General Game",
+        "move_history": []
+    }
+
+    # mock the setup methods 
+    game_app._setup_game_window = MagicMock()
+    game_app._setup_game_board_and_visuals = MagicMock()
+    game_app._setup_game_window.after = MagicMock()
+
+    game_app.start_replay_sequence(game_data) 
+
+    # assert GeneralMode was called with thr right data 
+    game_app.MockGeneralMode.assert_called_once()
+    args, _ = game_app.MockGeneralMode.call_args
+    assert args[0] == 5
+    assert isinstance(args[1], HumanPlayer) and args[1].color == "Blue"
+    assert isinstance(args[2], HumanPlayer) and args[2].color == "Red"
+
+    # 2. Assert the move history is loaded for iteration
+    assert game_app.moves_to_replay == []
+    assert game_app.current_move_indx == 0
