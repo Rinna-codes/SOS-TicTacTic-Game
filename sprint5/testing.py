@@ -1,5 +1,6 @@
 import pytest
-from unittest.mock import MagicMockk, patch
+import tkinter as tk
+from unittest.mock import MagicMock, patch
 from gui_file import SOSGame 
 
 @pytest.fixture
@@ -25,4 +26,29 @@ def mock_game_setup():
         game_app.MockGeneralMode = MockGeneralMode
         
         yield game_app
-    
+
+@pytest.fixture
+def mock_active_game(mock_game_setup):
+    """Sets up the mock SOS game with an active game state"""
+
+    game_app = mock_game_setup
+
+    # Game object for Simple mode with a board size of 3
+    mock_game = MagicMock()
+    mock_game.board.board_size = 3
+    mock_game.game_mode = "Simple Game"
+    mock_game.move_history = [
+        (0, 0, "S", "Blue"),
+        (1, 1, "O", "Red"),
+        (0, 1, "S", "Blue")
+    ]
+
+    # create a SOS game instance 
+    game_app.game = mock_game
+
+    # make a mock game window 
+    game_app.game_window = MagicMock(spec=tk.Tk)
+    game_app.turn_label = MagicMock(spec=tk.Label)
+    game_app.board_buttons = [[MagicMock(spec=tk.Button) for _ in range(3)] for _ in range(3)]
+
+    return game_app
