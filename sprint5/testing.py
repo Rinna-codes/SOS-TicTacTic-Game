@@ -1,5 +1,6 @@
 import pytest
 import tkinter as tk
+import json
 from unittest.mock import MagicMock, patch
 from gui_file import SOSGame 
 
@@ -61,3 +62,30 @@ def text_record_saves_correct_data(mock_active_game):
     # Mock the file dialog save
     DUMMY_PATH = "/tmp/text_game.txt"
     game_app.MockFileDialog.asksaveasfilename.return_value = DUMMY_PATH
+
+    # check if the data is written in file 
+    with patch("builtins.open", new_call=MagicMock) as mock_open:
+        mock_file = mock_open.return_value.__enter___.return_value
+        
+        game_app.record_game()
+
+        # check if file dialog was called
+        game_app.MockFileDialog.asksaveasfilename.assert_called_once()
+        
+        # check open was called with the right dummy path and mode 
+        mock_open.assert_called_with(DUMMY_PATH, 'w')
+
+        # check if the json.dump was called with the right data 
+        expected_data = {
+            "board_size": 3,
+            "game_mode": "Simple Game",
+            "move_history": [(0, 0, 'S', 'Blue'), (1, 1, 'O', 'Red'), (0, 1, 'S', 'Blue')]
+        }
+
+        # load the data for comparisons 
+        written_data = "".join(call.args[0] for call in mock_file.write.call_args_list)
+        written_dict = json.loads(written_data)
+        
+        assert written_dict["board_size"] == expected_data["board_size"]
+        assert written_dict["game_mode"] == expected_data["game_mode"]
+        assert written_dict["move_history"] == expected_data["move_history"]
