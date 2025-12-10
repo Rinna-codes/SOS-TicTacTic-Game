@@ -330,6 +330,9 @@ class SOSGame():
         else: 
             self.game = GeneralMode(board_size, blue_player, red_player)
 
+        # Sets the correct mode to display during replay
+        self.mode.set(game_mode)
+
         # Set up the gui for replay sequence 
         self._setup_game_window()
         self._setup_game_board_and_visuals("Replay", "Replay")
