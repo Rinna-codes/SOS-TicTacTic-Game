@@ -33,6 +33,4 @@ Game Setup:\
 <img width="200" height="250" alt="image" src="https://github.com/user-attachments/assets/384d517c-705c-4645-b99f-20656a9270a3" />
 
 Gameplay:
-<div style="position: relative; width: 100%; height: 0; padding-bottom: 75%">
-	<iframe src="https://umsystem.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=c15dfae3-19e2-4e52-badc-b3da004c32f0&autoplay=true&offerviewer=false&showtitle=true&showbrand=true&captions=false&interactivity=all" style="border: 1px solid #464646; position: absolute; top: 0; left: 0; width: 100%; height: 100%; box-sizing: border-box;" allowfullscreen allow="autoplay" aria-label="Panopto Embedded Video Player" aria-description="SOSDemo"></iframe>
-</div>
+<video src="https://umsystem.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=c15dfae3-19e2-4e52-badc-b3da004c32f0" height="250" width="200"></video>
