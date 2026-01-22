@@ -26,7 +26,7 @@ The general process of developing the game was conducted through five separate s
 ## 💻 Demonstration
 **Gameplay: Human vs Computer**\
 **Boardsize: 5**\
-**Game Mode: General Game**\
+**Game Mode: General Game**
 
 Version of SOS game: Sprint #5
 ...
