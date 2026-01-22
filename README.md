@@ -33,4 +33,4 @@ Game Setup:\
 <img width="200" height="250" alt="image" src="https://github.com/user-attachments/assets/384d517c-705c-4645-b99f-20656a9270a3" />\
 
 Gameplay:
-<video src="https://umsystem.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=c15dfae3-19e2-4e52-badc-b3da004c32f0" width="200" height="250"><\video>
+<video src="https://umsystem.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=c15dfae3-19e2-4e52-badc-b3da004c32f0" width="200" height="250"></video>
