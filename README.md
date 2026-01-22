@@ -30,5 +30,4 @@ The general process of developing the game was conducted through five separate s
 
 Version of SOS game: Sprint #5\
 Game Setup:\
-<img width="502" height="688" alt="image" src="https://github.com/user-attachments/assets/e14c6551-a4f3-4c42-9952-652c19ffda32" />
-
+<img width="200" height="250" alt="image" src="https://github.com/user-attachments/assets/384d517c-705c-4645-b99f-20656a9270a3" />
