@@ -21,4 +21,7 @@ The general process of developing the game was conducted through five separate s
 * **Sprint #2** is implementing the features of basic game options, initiating the game, and S/O human player placement on game board. First sprint to implment the user interface of the game.
 * **Sprint #3** was the implementation of the logic of a human player playing in a simple or general SOS game against another human opponent, refactoring of code.
 * **Sprint #4** involved implementing the features of selecting between a human or computer player during a simple or general SOS game mode against another player (human/computer).
-* **Sprint #5** was the last spring of implementing the feature to record a game into a text file and being able to replay said text file. 
+* **Sprint #5** was the last spring of implementing the feature to record a game into a text file and being able to replay said text file.
+
+## 💻 Demonstration
+...
