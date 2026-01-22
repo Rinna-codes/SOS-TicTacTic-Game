@@ -12,7 +12,7 @@ TicTacToe SOS game is "paper-and-pencil" game comprising of two active players w
   * **Two Player Selection**: Human vs. Human, Computer vs. Computer, or Human vs. Computer. Choose wisely.
   * **Game Mode Selection**: Select game mode between Simple or General.
   * **Record Game**: Be able to choose to remember the moves player took to win the game.
-  * **Reokay Game**: Able to click on recorded game and watch a complete replay of the game iteself to relive the glory days
+  * **Replay Game**: Able to click on recorded game and watch a complete replay of the game iteself to relive the glory days
 
 ## ✍️ Process
 The general process of developing the game was conducted through five separate sprints throughout the Fall-Winter season of 2025 (August-December), each implementing different features and major components that evenutally resulted in the completed, final version of this SOS TicTacToe game. There were precisely six sprints;
