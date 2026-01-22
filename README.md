@@ -24,4 +24,5 @@ The general process of developing the game was conducted through five separate s
 * **Sprint #5** was the last spring of implementing the feature to record a game into a text file and being able to replay said text file.
 
 ## 💻 Demonstration
+Version of SOS game: Sprint #5
 ...
