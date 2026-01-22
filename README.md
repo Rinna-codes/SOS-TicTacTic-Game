@@ -28,5 +28,7 @@ The general process of developing the game was conducted through five separate s
 **Boardsize**: 5\
 **Game Mode**: General Game
 
-Version of SOS game: Sprint #5
-...
+Version of SOS game: Sprint #5\
+Game Setup:\
+<img width="502" height="688" alt="image" src="https://github.com/user-attachments/assets/e14c6551-a4f3-4c42-9952-652c19ffda32" />
+
