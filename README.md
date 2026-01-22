@@ -24,10 +24,12 @@ The general process of developing the game was conducted through five separate s
 * **Sprint #5** was the last spring of implementing the feature to record a game into a text file and being able to replay said text file.
 
 ## 💻 Demonstration
-**Gameplay**: Human vs Computer\
+**Players**: Human vs Computer\
 **Boardsize**: 5\
 **Game Mode**: General Game
 
 Version of SOS game: Sprint #5\
 Game Setup:\
-<img width="200" height="250" alt="image" src="https://github.com/user-attachments/assets/384d517c-705c-4645-b99f-20656a9270a3" />
+<img width="200" height="250" alt="image" src="https://github.com/user-attachments/assets/384d517c-705c-4645-b99f-20656a9270a3" />\
+
+Gameplay:\
