@@ -29,7 +29,7 @@ The general process of developing the game was conducted through five separate s
 **Game Mode**: General Game
 
 Version of SOS game: Sprint #5\
-Game Setup:\
+Game Setup Menu:\
 <img width="250" height="300" alt="image" src="https://github.com/user-attachments/assets/384d517c-705c-4645-b99f-20656a9270a3" />
 
 Gameplay Video:
