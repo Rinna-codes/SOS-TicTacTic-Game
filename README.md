@@ -23,7 +23,7 @@ The general process of developing the game was conducted through five separate s
 * **Sprint #4** involved implementing the features of selecting between a human or computer player during a simple or general SOS game mode against another player (human/computer).
 * **Sprint #5** was the last sprint of implementing the feature to record a game into a text file (.txt) and being able to replay the game from the same text file.
 
-## 💻 Demonstration
+## 💻 SOS TicTacToe Demonstration
 **Players**: Human vs Computer\
 **Boardsize**: 5\
 **Game Mode**: General Game
